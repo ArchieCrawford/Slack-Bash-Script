@@ -1,0 +1,55 @@
+
+
+Default_Url="Slack Web Hook "
+
+Url=${Default_Url}
+Develop=1
+Channel="#sea"
+Name="Archie"
+Icon="eyes"
+COMPUTER_NAME="Archie"
+
+
+IFS='' read -r -d '' DATA <<EOF
+payload={
+    "channel": "#slackchannel",
+    "username": "username",
+    "icon_emoji": ":eyes:",
+    "text": "Testing",
+    "attachments":[
+    {
+        "fallback":"test test",
+        "pretext":"Carbon Black alerts: information on alert below",
+        "color":"#D00000",
+        "fields":[
+           {
+              "title":"${COMPUTER_NAME}",
+              "value":"Banana computer",
+              "short":false
+           }
+        ]
+     }
+  ]
+}
+EOF
+
+
+
+
+
+
+
+echo ${DATA}
+
+            Slack_Payload="payload={\"channel\": \"${Channel}\", \"username\": \"${Name}\", \"text\": \""
+            Slack_Payload+="Blah"
+            #Slack_Payload+="$(echo -e ${Message} | sed -e "s#\"\#\\\\\"#g" -e ':a;N;$!ba;s/\r/\\n/g')"
+            Slack_Payload+="\", \"icon_emoji\": \":$Icon:\"}"
+            if [ $Develop -eq 0 ]; then
+                echo curl -X POST --data-urlencode "${DATA}" $Url
+            else
+                curl -X POST --data-urlencode "${DATA}" $Url
+            fi
+
+
+
